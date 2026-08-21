@@ -1,0 +1,14 @@
+name: network_analyzer_workspace
+description: >-
+  Workspace for the network_analyzer federated Flutter plugin.
+publish_to: none
+
+environment:
+  sdk: ^3.11.0
+
+workspace:
+  - packages/network_analyzer
+  - packages/network_analyzer/example
+  - packages/network_analyzer_android
+  - packages/network_analyzer_ios
+  - packages/network_analyzer_platform_interface

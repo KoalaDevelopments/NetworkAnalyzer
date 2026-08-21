@@ -1,0 +1,25 @@
+{
+  "$schema_version": 1,
+  "domain": "scanner_history",
+  "updated_at": "2026-08-21",
+  "status": "planned",
+  "layers": {
+    "domain_models": [],
+    "failures": [],
+    "contract": [],
+    "facade": [],
+    "platform_dart": [],
+    "platform_native": [],
+    "transport": [],
+    "tests": []
+  },
+  "dependencies": {
+    "domains": ["core_result", "scanner"],
+    "pub": {},
+    "native": {}
+  },
+  "retrieval_hints": [
+    "Populate during /speckit-specify → /speckit-plan.",
+    "Device-local durable store owned by the plugin: versioned schema, forward-only tested migrations, index-backed paginated queries (constitution: Data Management)."
+  ]
+}

@@ -1,0 +1,102 @@
+# Workspace-wide analysis baseline, from guidelines.md (Flutter & Dart
+# Guidelines). Each package includes this file from its own
+# analysis_options.yaml. Deviations from the guidelines source are marked
+# with a NOTE comment and must stay justified.
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - "**.freezed.dart"
+    - "**.g.dart"
+    - "**/generated_plugin_registrant.dart"
+    - lib/l10n/app_localizations*.dart
+    - "**/build/*"
+  errors:
+    directives_ordering: error
+    prefer_single_quotes: error
+    always_declare_return_types: error
+    invalid_annotation_target: ignore
+    # NOTE: guidelines.md lists `const_and_final: warning`, which is not a
+    # recognized analyzer diagnostic and would itself raise a warning,
+    # breaking the zero-diagnostics gate. Its intent is covered by the
+    # prefer_const_* and prefer_final_locals lints below.
+
+formatter:
+  page_width: 80
+  trailing_commas: preserve
+
+linter:
+  rules:
+    ## ERROR RULES
+    avoid_dynamic_calls: true
+    avoid_slow_async_io: true
+    avoid_type_to_string: true
+    avoid_web_libraries_in_flutter: true
+    cancel_subscriptions: true
+    close_sinks: true
+    comment_references: true
+    deprecated_member_use_from_same_package: true
+    discarded_futures: false
+    invalid_case_patterns: true
+    literal_only_boolean_expressions: true
+    no_self_assignments: true
+    prefer_relative_imports: false
+    prefer_void_to_null: true
+    throw_in_finally: true
+    unnecessary_statements: true
+
+    ## STYLES RULES
+    always_declare_return_types: true
+    always_put_required_named_parameters_first: true
+    avoid_annotating_with_dynamic: false
+    avoid_bool_literals_in_conditional_expressions: true
+    avoid_catching_errors: true
+    avoid_classes_with_only_static_members: true
+    avoid_double_and_int_checks: true
+    avoid_equals_and_hash_code_on_mutable_classes: true
+    avoid_implementing_value_types: true
+    avoid_multiple_declarations_per_line: true
+    avoid_private_typedef_functions: true
+    avoid_redundant_argument_values: true
+    avoid_void_async: false
+    cast_nullable_to_non_nullable: true
+    combinators_ordering: true
+    directives_ordering: true
+    eol_at_end_of_file: true
+    lines_longer_than_80_chars: false
+    matching_super_parameters: true
+    no_literal_bool_comparisons: true
+    one_member_abstracts: true
+    only_throw_errors: true
+    prefer_expression_function_bodies: true
+    prefer_final_locals: true
+    prefer_if_elements_to_conditional_expressions: true
+    prefer_int_literals: true
+    prefer_mixin: true
+    prefer_null_aware_method_calls: true
+    prefer_single_quotes: true
+    require_trailing_commas: false
+    sized_box_shrink_expand: true
+    sort_constructors_first: true
+    sort_unnamed_constructors_first: true
+    type_annotate_public_apis: true
+    unawaited_futures: true
+    unnecessary_await_in_return: true
+    unnecessary_breaks: true
+    unnecessary_null_checks: true
+    unnecessary_parenthesis: true
+    unnecessary_raw_strings: true
+    unreachable_from_main: true
+    use_colored_box: true
+    use_decorated_box: true
+    use_enums: true
+    use_is_even_rather_than_modulo: true
+    use_named_constants: true
+    use_raw_strings: true
+    use_test_throws_matchers: true
+    unnecessary_const: true
+    prefer_const_constructors: true
+    prefer_const_declarations: true
+
+    ## PUB RULES
+    sort_pub_dependencies: true

@@ -1,0 +1,35 @@
+name: network_analyzer_ios
+description: >-
+  The iOS implementation of network_analyzer.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.11.0
+  flutter: '>=3.3.0'
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  network_analyzer_platform_interface:
+    path: ../network_analyzer_platform_interface
+
+# NOTE: `pigeon` is added by tool/bootstrap.sh (`flutter pub add dev:pigeon`)
+# so the constraint is written by pub against the live registry, then
+# committed. Run the bootstrap before analyzing this package.
+dev_dependencies:
+  checks: ^0.3.0
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+  pigeon: ^27.3.2
+
+flutter:
+  plugin:
+    implements: network_analyzer
+    platforms:
+      ios:
+        pluginClass: NetworkAnalyzerIosPlugin
+        dartPluginClass: NetworkAnalyzerIos

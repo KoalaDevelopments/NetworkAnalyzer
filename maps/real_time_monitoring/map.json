@@ -1,0 +1,25 @@
+{
+  "$schema_version": 1,
+  "domain": "real_time_monitoring",
+  "updated_at": "2026-08-21",
+  "status": "planned",
+  "layers": {
+    "domain_models": [],
+    "failures": [],
+    "contract": [],
+    "facade": [],
+    "platform_dart": [],
+    "platform_native": [],
+    "transport": [],
+    "tests": []
+  },
+  "dependencies": {
+    "domains": ["core_result"],
+    "pub": {},
+    "native": {}
+  },
+  "retrieval_hints": [
+    "First feature — populate during /speckit-specify → /speckit-plan.",
+    "Continuous data goes out as broadcast Streams (constitution Principle V); pigeon inputs land in pigeons/monitoring.dart per platform package."
+  ]
+}

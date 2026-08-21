@@ -1,0 +1,192 @@
+{
+  "$schema_version": 1,
+  "domain": "bridge_bootstrap",
+  "updated_at": "2026-08-21",
+  "status": "scaffolded",
+  "layers": {
+    "domain_models": [
+      {
+        "symbol": "BridgeInfo",
+        "kind": "immutable value type (==, hashCode, toString)",
+        "file": "packages/network_analyzer_platform_interface/lib/src/types/bridge_info.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "Native-side identity: operatingSystem ('android'/'ios') + osVersion. Public domain model mapped from the transport DTO."
+      }
+    ],
+    "failures": [
+      {
+        "symbol": "BridgeFailure",
+        "kind": "Failure subtype",
+        "file": "packages/network_analyzer_platform_interface/lib/src/failures/bridge_failure.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "Raised when the native bridge cannot service a request (maps PlatformException)."
+      }
+    ],
+    "contract": [
+      {
+        "symbol": "NetworkAnalyzerPlatform.getBridgeInfo",
+        "kind": "platform interface method (PlatformInterface + token)",
+        "file": "packages/network_analyzer_platform_interface/lib/src/network_analyzer_platform.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "Future<Result<BridgeInfo, Failure>>; default throws UnimplementedError; placeholder default instance until registerWith runs."
+      }
+    ],
+    "facade": [
+      {
+        "symbol": "NetworkAnalyzer.getBridgeInfo",
+        "kind": "app-facing API",
+        "file": "packages/network_analyzer/lib/network_analyzer.dart",
+        "package": "network_analyzer",
+        "summary": "Delegates to NetworkAnalyzerPlatform.instance; re-exports Result core + BridgeInfo/BridgeFailure for consumers."
+      }
+    ],
+    "platform_dart": [
+      {
+        "symbol": "NetworkAnalyzerAndroid",
+        "kind": "platform implementation (dartPluginClass, registerWith)",
+        "file": "packages/network_analyzer_android/lib/network_analyzer_android.dart",
+        "package": "network_analyzer_android",
+        "summary": "Calls pigeon NetworkAnalyzerHostApi; maps BridgeInfoMessage→BridgeInfo and PlatformException→BridgeFailure; logs via dart:developer."
+      },
+      {
+        "symbol": "NetworkAnalyzerIos",
+        "kind": "platform implementation (dartPluginClass, registerWith)",
+        "file": "packages/network_analyzer_ios/lib/network_analyzer_ios.dart",
+        "package": "network_analyzer_ios",
+        "summary": "Same shape as the Android implementation."
+      }
+    ],
+    "platform_native": [
+      {
+        "symbol": "NetworkAnalyzerAndroidPlugin",
+        "kind": "Kotlin FlutterPlugin + generated HostApi implementation",
+        "file": "packages/network_analyzer_android/android/src/main/kotlin/com/koaladevelopments/network_analyzer_android/NetworkAnalyzerAndroidPlugin.kt",
+        "package": "network_analyzer_android",
+        "summary": "setUp on attach/detach; getBridgeInfo returns 'android' + Build.VERSION.RELEASE (JVM fallback 'unknown')."
+      },
+      {
+        "symbol": "NetworkAnalyzerIosPlugin",
+        "kind": "Swift FlutterPlugin + generated HostApi implementation (SPM layout)",
+        "file": "packages/network_analyzer_ios/ios/network_analyzer_ios/Sources/network_analyzer_ios/NetworkAnalyzerIosPlugin.swift",
+        "package": "network_analyzer_ios",
+        "summary": "HostApiSetup on register; getBridgeInfo returns 'ios' + UIDevice.current.systemVersion."
+      }
+    ],
+    "transport": [
+      {
+        "symbol": "pigeons/messages.dart (android)",
+        "kind": "pigeon input (BridgeInfoMessage, NetworkAnalyzerHostApi)",
+        "file": "packages/network_analyzer_android/pigeons/messages.dart",
+        "package": "network_analyzer_android",
+        "summary": "Source of truth for the Android wire format; pigeon ^27.3.2."
+      },
+      {
+        "symbol": "pigeons/messages.dart (ios)",
+        "kind": "pigeon input (BridgeInfoMessage, NetworkAnalyzerHostApi)",
+        "file": "packages/network_analyzer_ios/pigeons/messages.dart",
+        "package": "network_analyzer_ios",
+        "summary": "Source of truth for the iOS wire format; pigeon ^27.3.2."
+      },
+      {
+        "symbol": "messages.g.dart (android)",
+        "kind": "generated Dart client",
+        "file": "packages/network_analyzer_android/lib/src/messages.g.dart",
+        "package": "network_analyzer_android",
+        "generated": true,
+        "summary": "Committed codegen output; never edit by hand."
+      },
+      {
+        "symbol": "messages.g.dart (ios)",
+        "kind": "generated Dart client",
+        "file": "packages/network_analyzer_ios/lib/src/messages.g.dart",
+        "package": "network_analyzer_ios",
+        "generated": true,
+        "summary": "Committed codegen output; never edit by hand."
+      },
+      {
+        "symbol": "Messages.g.kt",
+        "kind": "generated Kotlin host",
+        "file": "packages/network_analyzer_android/android/src/main/kotlin/com/koaladevelopments/network_analyzer_android/Messages.g.kt",
+        "package": "network_analyzer_android",
+        "generated": true,
+        "summary": "Committed codegen output; never edit by hand."
+      },
+      {
+        "symbol": "Messages.g.swift",
+        "kind": "generated Swift host",
+        "file": "packages/network_analyzer_ios/ios/network_analyzer_ios/Sources/network_analyzer_ios/Messages.g.swift",
+        "package": "network_analyzer_ios",
+        "generated": true,
+        "summary": "Committed codegen output; never edit by hand."
+      }
+    ],
+    "tests": [
+      {
+        "symbol": "network_analyzer_test.dart",
+        "kind": "unit tests (fake platform via MockPlatformInterfaceMixin)",
+        "file": "packages/network_analyzer/test/network_analyzer_test.dart",
+        "package": "network_analyzer",
+        "summary": "Facade forwards success/failure results unchanged."
+      },
+      {
+        "symbol": "network_analyzer_platform_test.dart",
+        "kind": "unit tests",
+        "file": "packages/network_analyzer_platform_interface/test/src/network_analyzer_platform_test.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "Default instance throws UnimplementedError; token verification accepts extends, rejects implements."
+      },
+      {
+        "symbol": "bridge_info_test.dart (types)",
+        "kind": "unit tests",
+        "file": "packages/network_analyzer_platform_interface/test/src/types/bridge_info_test.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "Equality, hashCode, toString."
+      },
+      {
+        "symbol": "network_analyzer_android_test.dart",
+        "kind": "unit tests (fake generated HostApi)",
+        "file": "packages/network_analyzer_android/test/network_analyzer_android_test.dart",
+        "package": "network_analyzer_android",
+        "summary": "registerWith; DTO→domain mapping; PlatformException→BridgeFailure."
+      },
+      {
+        "symbol": "network_analyzer_ios_test.dart",
+        "kind": "unit tests (fake generated HostApi)",
+        "file": "packages/network_analyzer_ios/test/network_analyzer_ios_test.dart",
+        "package": "network_analyzer_ios",
+        "summary": "Same shape as the Android tests."
+      },
+      {
+        "symbol": "NetworkAnalyzerAndroidPluginTest",
+        "kind": "Kotlin JVM unit test",
+        "file": "packages/network_analyzer_android/android/src/test/kotlin/com/koaladevelopments/network_analyzer_android/NetworkAnalyzerAndroidPluginTest.kt",
+        "package": "network_analyzer_android",
+        "summary": "getBridgeInfo reports 'android' with JVM fallback version."
+      },
+      {
+        "symbol": "bridge_info_test.dart (integration)",
+        "kind": "integration test (device round-trip)",
+        "file": "packages/network_analyzer/example/integration_test/bridge_info_test.dart",
+        "package": "network_analyzer_example",
+        "summary": "End-to-end pigeon round-trip on Android and iOS; asserts OS identity per defaultTargetPlatform."
+      }
+    ]
+  },
+  "dependencies": {
+    "domains": ["core_result"],
+    "pub": {
+      "network_analyzer_platform_interface": ["flutter", "meta", "plugin_platform_interface ^2.0.2"],
+      "network_analyzer_android": ["flutter", "network_analyzer_platform_interface", "pigeon ^27.3.2 (dev)"],
+      "network_analyzer_ios": ["flutter", "network_analyzer_platform_interface", "pigeon ^27.3.2 (dev)"]
+    },
+    "native": {
+      "android": ["io.flutter.embedding (engine plugin API)", "android.os.Build"],
+      "ios": ["Flutter", "UIKit"]
+    }
+  },
+  "retrieval_hints": [
+    "Read order: contract → facade → platform_dart → platform_native → transport.",
+    "Wire format is per-platform and private; public types never expose pigeon DTOs.",
+    "Example app lib/main.dart renders this probe (FutureBuilder + Result.fold)."
+  ]
+}

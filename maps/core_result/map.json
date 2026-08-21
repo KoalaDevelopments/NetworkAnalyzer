@@ -1,0 +1,63 @@
+{
+  "$schema_version": 1,
+  "domain": "core_result",
+  "updated_at": "2026-08-21",
+  "status": "implemented",
+  "layers": {
+    "domain_models": [
+      {
+        "symbol": "Result<T, S extends Failure>",
+        "kind": "abstract interface + const factories (success/failure)",
+        "file": "packages/network_analyzer_platform_interface/lib/src/core/result/result.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "Functional result: fold/tryFold, isSuccess/isFailure, throwing accessors (NotFailureException/NotSuccessException)."
+      },
+      {
+        "symbol": "Failure",
+        "kind": "abstract interface (implements Exception) + default factory",
+        "file": "packages/network_analyzer_platform_interface/lib/src/core/result/failure.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "message + optional details; part of result.dart. Domain-specific subtypes live in lib/src/failures/."
+      },
+      {
+        "symbol": "Success<T> / VoidSuccess",
+        "kind": "abstract interface + const factory / void specialization",
+        "file": "packages/network_analyzer_platform_interface/lib/src/core/result/success.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "Value carrier for the success branch; part of result.dart."
+      },
+      {
+        "symbol": "ResultCallback<T, R>",
+        "kind": "typedef",
+        "file": "packages/network_analyzer_platform_interface/lib/src/core/result/result.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "Callback shape used by fold/tryFold."
+      }
+    ],
+    "failures": [],
+    "contract": [],
+    "facade": [],
+    "platform_dart": [],
+    "platform_native": [],
+    "transport": [],
+    "tests": [
+      {
+        "symbol": "result_test.dart",
+        "kind": "unit tests (package:checks)",
+        "file": "packages/network_analyzer_platform_interface/test/src/core/result/result_test.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "Covers both branches: fold, tryFold, accessors, exception cases, Failure.toString, VoidSuccess."
+      }
+    ]
+  },
+  "dependencies": {
+    "domains": [],
+    "pub": {},
+    "native": {}
+  },
+  "retrieval_hints": [
+    "result.dart is the library root; failure.dart and success.dart are `part of` it — read result.dart first.",
+    "Constitution Principle III: this implementation is canonical; never replace with dartz/fpdart.",
+    "Every fallible public API in any domain returns Result<T, Failure> from this core."
+  ]
+}
