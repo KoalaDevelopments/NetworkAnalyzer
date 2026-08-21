@@ -654,13 +654,13 @@ final ButtonStyle myButtonStyle = ButtonStyle(
 
 Reference palette:
 
-| Role | Hex |
-| --- | --- |
-| Primary | `#0D47A1` |
-| Secondary | `#1976D2` |
-| Accent | `#FFC107` |
+| Role           | Hex       |
+|----------------|-----------|
+| Primary        | `#0D47A1` |
+| Secondary      | `#1976D2` |
+| Accent         | `#FFC107` |
 | Neutral / Text | `#212121` |
-| Background | `#FEFEFE` |
+| Background     | `#FEFEFE` |
 
 ### Typography
 
