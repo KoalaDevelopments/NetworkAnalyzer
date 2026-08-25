@@ -51,3 +51,11 @@ since Android 5. No NDK component, no root, and no shelling out to
 
 IPv4 only in this version. On an IPv6-only network, ICMP returns
 `UnsupportedCapabilityFailure`; TCP and UDP keep working.
+
+## Emulator caveat
+
+QEMU's user-mode NAT does not forward ICMP echo to external hosts, so
+internet ICMP monitoring reports 100% loss on the emulator while gateway
+ICMP (the virtual router, 10.0.2.1) works. Emulator latency values are
+artifacts of the virtual NAT stack, not real measurements. Validate ICMP and
+any latency claim on a physical device.

@@ -169,6 +169,37 @@ raw round-trip time, interface type, device address and gateway address are
 decided natively — every derived value comes from the one shared Dart engine
 (research R-001).
 
+## Known environment behaviours — not defects
+
+Observed during device validation (2026-08-24). Each is the environment
+telling the truth; none is a measurement error.
+
+### Android emulator
+
+- **Internet ICMP shows 100% loss.** QEMU's user-mode NAT (slirp) does not
+  forward ICMP echo to external hosts — only the virtual addresses
+  (10.0.2.1, 10.0.2.2) answer pings from inside the emulator. This is a
+  long-standing emulator limitation. Gateway ICMP works (the virtual router
+  answers in ~1 ms); internet ICMP needs a physical device.
+- **Latency numbers are emulator artifacts.** All emulator traffic funnels
+  through the slirp NAT stack in the host process; "Wi-Fi" is fully
+  emulated and never joins the host's LAN, and the emulator's signal-quality
+  setting shapes reported RSSI, not timing. High internet latency and odd
+  values like a ~300 ms TCP "refusal" from the virtual gateway are slirp
+  behaviours. Treat emulator runs as functional checks only; latency claims
+  (SC-001, SC-002, SC-010) need physical hardware.
+
+### Cellular networks (physical devices)
+
+- **ICMP runs high and unstable by design of the carrier.** Mobile networks
+  give ICMP echo the lowest priority and rate-limit it; several hundred ms
+  with early drops while the radio wakes is normal, on the same connection
+  where TCP shows ~100 ms. The gap is the carrier's ICMP policy, measured.
+- **Gateway monitoring reports loss on most carriers.** The discovered
+  "gateway" is the carrier's first hop, which usually drops probes
+  silently. Gateway monitoring answers "is my router OK", which is a
+  Wi-Fi/Ethernet question; on cellular use an internet monitor.
+
 ## Done when
 
 Every gate above is green, `flutter analyze` reports zero diagnostics, each new

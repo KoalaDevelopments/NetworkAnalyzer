@@ -6,6 +6,15 @@ part of 'monitor_interface.dart';
 /// default route itself, so the host application never has to know or guess
 /// the router's address.
 ///
+/// **Designed for Wi-Fi and Ethernet, where the gateway is a local router
+/// one hop away.** On cellular there is no local router: the discovered
+/// address is the carrier's first hop, and most carriers silently drop
+/// probes to it. A session started on cellular therefore tends to report
+/// total loss and a critical verdict even though the connection itself is
+/// healthy — an honest measurement of a gateway that refuses to answer, not
+/// a connection problem. To judge a cellular connection, monitor the
+/// internet with an [InternetInterface] instead.
+///
 /// ```dart
 /// GatewayInterface(protocol: MonitorProtocol.icmp);
 /// ```

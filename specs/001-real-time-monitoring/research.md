@@ -107,6 +107,22 @@ uses exactly this pairing — `KotlinOptions(includeErrorClass: false)` and
 Default port for TCP and UDP is 53, because every preset target is a DNS
 resolver; the port is overridable on a custom target.
 
+**Amendments from device testing (2026-08-24):**
+
+- **A refused TCP connection is a success, not a loss.** The RST that refuses
+  it round-tripped from the target: reachability proven, timing real. Without
+  this, gateway monitoring reports 100% loss against any router that listens
+  on no TCP port — including the Android emulator's virtual gateway.
+- **Darwin delivers the IPv4 header on ICMP datagram sockets; Linux strips
+  it.** The reply parser must strip a leading IPv4 header on iOS or every
+  genuine echo reply reads as malformed (observed as 100% loss). Receiving
+  also loops until the matching sequence arrives — the socket delivers every
+  ICMP message addressed to it, not only ours.
+- **`SO_SNDTIMEO` does not bound a blocking `connect()` on Darwin.** The iOS
+  TCP probe uses a non-blocking connect completed with `poll` and read back
+  through `SO_ERROR`; a blackholing gateway would otherwise hang the probe
+  queue for the kernel's ~75 s timeout and the session would emit nothing.
+
 **Rationale**: ICMP was the one protocol at risk of being impossible on
 Android without an NDK component. It is not: unprivileged ICMP *datagram*
 sockets have been permitted since Android 5, and `android.system.Os` exposes the

@@ -486,6 +486,8 @@
     "stopMonitoring() ends emission; dispose() completes the streams. Documented deviation from the literal wording of FR-016 - see the dartdoc on MonitoringController.dispose.",
     "Pigeon constraints: event-channel methods take no parameters and must all live in one @EventChannelApi; a wire field must not be named 'protocol' (reserved in Swift, emitted unescaped) - hence probeProtocol.",
     "ICMP is IPv4-only; an IPv6-only network returns UnsupportedCapabilityFailure. Upgrade path marked with 'ponytail:' comments at both IcmpProber sites.",
-    "iOS gotcha: <net/route.h> is absent from the iOS SDK (rt_msghdr, RTF_*, RTA_* unavailable to Swift AND C), while CTL_NET/PF_ROUTE/NET_RT_DUMP are present in <sys/socket.h>. Verify Swift with `swiftc -typecheck -sdk $(xcrun --sdk iphoneos --show-sdk-path)` \u2014 `-parse` alone resolves no symbols."
+    "iOS gotcha: <net/route.h> is absent from the iOS SDK (rt_msghdr, RTF_*, RTA_* unavailable to Swift AND C), while CTL_NET/PF_ROUTE/NET_RT_DUMP are present in <sys/socket.h>. Verify Swift with `swiftc -typecheck -sdk $(xcrun --sdk iphoneos --show-sdk-path)` \u2014 `-parse` alone resolves no symbols.",
+    "Probe semantics learned on-device: TCP refused (RST) = success with timing, on both platforms; Darwin ICMP dgram sockets deliver the IPv4 header (strip before parsing, loop for matching sequence); SO_SNDTIMEO does not bound blocking connect() on Darwin \u2014 iOS TCP uses non-blocking connect + poll + SO_ERROR.",
+    "Environment truths (device-validated, documented in quickstart + dartdoc): carriers deprioritize ICMP (high/variable latency on cellular is real); cellular 'gateway' drops probes on most carriers (use internet monitor there); Android emulator slirp NAT forwards no external ICMP and distorts all latency."
   ]
 }
