@@ -4,7 +4,8 @@
 # 1. Resolves dependencies for every workspace package.
 # 2. Adds pigeon as a dev dependency of the platform packages (first run
 #    only) so the constraint is written by pub against the live registry.
-# 3. Runs pigeon codegen for Android (Kotlin) and iOS (Swift).
+# 3. Runs pigeon codegen for every pigeons/*.dart input in the Android
+#    (Kotlin) and iOS (Swift) packages — one input file per feature.
 # 4. Applies the formatting/lint gates required by the constitution.
 #
 # Run from anywhere: ./tool/bootstrap.sh
@@ -23,8 +24,10 @@ for pkg in packages/network_analyzer_android packages/network_analyzer_ios; do
       echo "==> adding pigeon dev dependency to $pkg"
       flutter pub add dev:pigeon
     fi
-    echo "==> pigeon codegen for $pkg"
-    dart run pigeon --input pigeons/messages.dart
+    for input in pigeons/*.dart; do
+      echo "==> pigeon codegen for $pkg ($input)"
+      dart run pigeon --input "$input"
+    done
   )
 done
 

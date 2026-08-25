@@ -31,3 +31,9 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 /build/
 /coverage/
+
+# Swift Package Manager / Xcode build artifacts (feature 001 adds an XCTest
+# target, so .build and DerivedData must stay ignored).
+.build/
+DerivedData/
+*.xcuserdatad/

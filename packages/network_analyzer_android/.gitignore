@@ -31,3 +31,11 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 /build/
 /coverage/
+
+# Kotlin / Gradle build artifacts (feature 001: native monitoring sources and
+# JUnit tests live under android/src, so android/build must stay ignored).
+.gradle/
+android/build/
+out/
+*.jar
+!gradle/wrapper/gradle-wrapper.jar

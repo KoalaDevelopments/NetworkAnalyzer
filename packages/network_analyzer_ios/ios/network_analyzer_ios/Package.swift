@@ -31,6 +31,10 @@ let package = Package(
                 // the following instructions to add them:
                 // https://developer.apple.com/documentation/xcode/bundling-resources-with-a-swift-package
             ]
+        ),
+        .testTarget(
+            name: "network_analyzer_iosTests",
+            dependencies: ["network_analyzer_ios"]
         )
     ]
 )
