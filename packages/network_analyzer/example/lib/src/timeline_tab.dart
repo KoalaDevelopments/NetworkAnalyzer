@@ -16,6 +16,15 @@ class TimelineTab extends StatefulWidget {
 class _TimelineTabState extends State<TimelineTab> {
   final List<String> _entries = <String>[];
 
+  /// A lost probe has no latency; show that honestly instead of "null".
+  static String _latency(ConnectionMetrics metrics) {
+    final Duration? latency = metrics.latency;
+    if (latency == null) {
+      return 'no reply';
+    }
+    return '${latency.inMicroseconds / 1000} ms';
+  }
+
   @override
   void initState() {
     super.initState();
@@ -26,7 +35,7 @@ class _TimelineTabState extends State<TimelineTab> {
       // Exhaustive: MonitorUpdate is sealed, so no default branch exists.
       final String entry = switch (update) {
         MetricsUpdate(:final ConnectionMetrics metrics) =>
-          'metrics · ${metrics.health.name} · ${metrics.latency}',
+          'metrics · ${metrics.health.name} · ${_latency(metrics)}',
         EventUpdate(:final MonitorEvent event) =>
           'event · ${event.kind.name} · ${event.message}',
       };
