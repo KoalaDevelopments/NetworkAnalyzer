@@ -14,6 +14,21 @@ final class _ImplementsPlatform extends PlatformInterface
   @override
   Future<Result<BridgeInfo, Failure>> getBridgeInfo() =>
       throw UnimplementedError();
+
+  @override
+  Future<Result<SessionData, Failure>> startMonitoring(
+    MonitorInterface target,
+  ) => throw UnimplementedError();
+
+  @override
+  Future<Result<void, Failure>> stopMonitoring() => throw UnimplementedError();
+
+  @override
+  Future<Result<SessionData, Failure>> currentSession() =>
+      throw UnimplementedError();
+
+  @override
+  Stream<MonitorSignal> monitorSignals() => throw UnimplementedError();
 }
 
 void main() {
@@ -21,6 +36,35 @@ void main() {
     test('default instance throws UnimplementedError for getBridgeInfo', () {
       check(
         () => NetworkAnalyzerPlatform.instance.getBridgeInfo(),
+      ).throws<UnimplementedError>();
+    });
+
+    test('default instance throws UnimplementedError for startMonitoring', () {
+      check(
+        () => NetworkAnalyzerPlatform.instance.startMonitoring(
+          InternetInterface(
+            protocol: MonitorProtocol.tcp,
+            host: PresetHost.google,
+          ),
+        ),
+      ).throws<UnimplementedError>();
+    });
+
+    test('default instance throws UnimplementedError for stopMonitoring', () {
+      check(
+        () => NetworkAnalyzerPlatform.instance.stopMonitoring(),
+      ).throws<UnimplementedError>();
+    });
+
+    test('default instance throws UnimplementedError for currentSession', () {
+      check(
+        () => NetworkAnalyzerPlatform.instance.currentSession(),
+      ).throws<UnimplementedError>();
+    });
+
+    test('default instance throws UnimplementedError for monitorSignals', () {
+      check(
+        () => NetworkAnalyzerPlatform.instance.monitorSignals(),
       ).throws<UnimplementedError>();
     });
 

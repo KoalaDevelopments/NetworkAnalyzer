@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:network_analyzer/network_analyzer.dart';
 
+import 'src/monitoring_screen.dart';
+
 void main() => runApp(const ExampleApp());
 
 /// Example host application for the network_analyzer plugin.
@@ -22,7 +24,35 @@ class ExampleApp extends StatelessWidget {
         brightness: Brightness.dark,
       ),
     ),
-    home: const BridgeInfoScreen(),
+    home: const HomeScreen(),
+  );
+}
+
+/// The example's entry screen.
+///
+/// The plugin ships no UI, so everything visual lives here — this app is the
+/// manual verification surface the constitution requires.
+class HomeScreen extends StatelessWidget {
+  /// Creates the home screen.
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) => DefaultTabController(
+    length: 2,
+    child: Scaffold(
+      appBar: AppBar(
+        title: const Text('NetworkAnalyzer'),
+        bottom: const TabBar(
+          tabs: <Widget>[
+            Tab(text: 'Monitoring', icon: Icon(Icons.monitor_heart)),
+            Tab(text: 'Bridge', icon: Icon(Icons.cable)),
+          ],
+        ),
+      ),
+      body: const TabBarView(
+        children: <Widget>[MonitoringScreen(), BridgeInfoScreen()],
+      ),
+    ),
   );
 }
 
@@ -41,12 +71,11 @@ class _BridgeInfoScreenState extends State<BridgeInfoScreen> {
   @override
   void initState() {
     super.initState();
-    _bridgeInfo = const NetworkAnalyzer().getBridgeInfo();
+    _bridgeInfo = NetworkAnalyzer().getBridgeInfo();
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('NetworkAnalyzer')),
     body: Center(
       child: FutureBuilder<Result<BridgeInfo, Failure>>(
         future: _bridgeInfo,

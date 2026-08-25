@@ -11,7 +11,7 @@ The iOS implementation of network_analyzer.
                        DESC
   s.homepage         = 'http://example.com'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'Koala Developments LTDA' => 'felipe.silva@koaladevelopemtns.com' }
   s.source           = { :path => '.' }
   
   s.source_files = 'network_analyzer_ios/Sources/network_analyzer_ios/**/*'

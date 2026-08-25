@@ -18,3 +18,35 @@ dart run pigeon --input pigeons/messages.dart
 
 Outputs (`lib/src/messages.g.dart`, `Messages.g.swift`) are committed
 after generation. Never hand-write channel code.
+
+## Permissions and entitlements
+
+**None.** Real-time monitoring needs no entitlement and no `Info.plist` key.
+
+## Frameworks
+
+| Framework | Why |
+|-----------|-----|
+| `Network` | `NWPathMonitor` for the interface type and change notifications |
+| `CoreTelephony` | `CTTelephonyNetworkInfo` for the cellular generation — no permission required, unlike Android |
+
+The default gateway has no public API on iOS, so it is read from the BSD
+routing table through `sysctl(CTL_NET, PF_ROUTE, NET_RT_DUMP)`. That is a
+public interface and passes App Store review.
+
+## ICMP
+
+ICMP monitoring uses an unprivileged ICMP datagram socket
+(`socket(AF_INET, SOCK_DGRAM, IPPROTO_ICMP)`) — the approach Apple's own
+`SimplePing` sample takes.
+
+## IPv6
+
+TCP and UDP probes resolve through `getaddrinfo` rather than a hand-built
+`sockaddr_in`, so on a NAT64/DNS64 network the system synthesises a routable
+IPv6 address from an IPv4 literal and monitoring keeps working. That is the
+network App Store review tests on.
+
+ICMP has no such synthesis. On an IPv6-only network it returns
+`UnsupportedCapabilityFailure` rather than silently substituting another
+protocol.

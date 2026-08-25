@@ -17,3 +17,37 @@ dart run pigeon --input pigeons/messages.dart
 
 Outputs (`lib/src/messages.g.dart`, `Messages.g.kt`) are committed after
 generation. Never hand-write channel code.
+
+## Permissions
+
+Declared by this package and merged into every host application:
+
+| Permission | Why | Protection level |
+|------------|-----|------------------|
+| `INTERNET` | Sending probes to a monitoring target | Normal |
+| `ACCESS_NETWORK_STATE` | Reading the active network's transport type, link addresses and default route via `ConnectivityManager` | Normal |
+
+Nothing else is declared.
+
+### `READ_PHONE_STATE` is deliberately not declared
+
+From API 30, refining a cellular connection to its generation
+(`TelephonyManager.getDataNetworkType`) requires `READ_PHONE_STATE` — a
+*dangerous* runtime permission. Declaring it here would push it onto every
+host application that adds this plugin, to improve one label.
+
+So the plugin does not declare it. Without the grant, a mobile connection is
+reported as `NetworkInterfaceType.cellular` rather than guessed at. A host
+application that has independently been granted `READ_PHONE_STATE` gets
+`cellular5g` / `cellular4g` / `cellular3g` / `cellular2g` automatically, with
+no extra configuration.
+
+## ICMP
+
+ICMP monitoring uses an *unprivileged* ICMP datagram socket
+(`android.system.Os.socket(AF_INET, SOCK_DGRAM, IPPROTO_ICMP)`), permitted
+since Android 5. No NDK component, no root, and no shelling out to
+`/system/bin/ping`.
+
+IPv4 only in this version. On an IPv6-only network, ICMP returns
+`UnsupportedCapabilityFailure`; TCP and UDP keep working.

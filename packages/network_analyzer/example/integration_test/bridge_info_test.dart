@@ -10,7 +10,7 @@ void main() {
   testWidgets('bootstrap probe round-trips through the native bridge', (
     WidgetTester tester,
   ) async {
-    final Result<BridgeInfo, Failure> result = await const NetworkAnalyzer()
+    final Result<BridgeInfo, Failure> result = await NetworkAnalyzer()
         .getBridgeInfo();
 
     check(result.isSuccess).isTrue();

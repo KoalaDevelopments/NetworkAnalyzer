@@ -1,25 +1,491 @@
 {
   "$schema_version": 1,
   "domain": "real_time_monitoring",
-  "updated_at": "2026-08-21",
-  "status": "planned",
+  "updated_at": "2026-08-24",
+  "status": "implemented",
   "layers": {
-    "domain_models": [],
-    "failures": [],
-    "contract": [],
-    "facade": [],
-    "platform_dart": [],
-    "platform_native": [],
-    "transport": [],
-    "tests": []
+    "domain_models": [
+      {
+        "symbol": "MonitorProtocol",
+        "kind": "enum",
+        "file": "lib/src/types/monitoring/monitor_protocol.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "tcp | udp | icmp; gateway monitors reject udp; ICMP is IPv4-only in v1"
+      },
+      {
+        "symbol": "MonitorKind",
+        "kind": "enum",
+        "file": "lib/src/types/monitoring/monitor_kind.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "internet | gateway, carried on every emission"
+      },
+      {
+        "symbol": "ConnectionHealth",
+        "kind": "enum",
+        "file": "lib/src/types/monitoring/connection_health.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "stable | unstable | critical | unknown"
+      },
+      {
+        "symbol": "NetworkInterfaceType",
+        "kind": "enum",
+        "file": "lib/src/types/monitoring/network_interface_type.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "ethernet/wifi/cellular*/vpn/other/none/unknown, with isCellular and isConnected"
+      },
+      {
+        "symbol": "MonitorOptions",
+        "kind": "class",
+        "file": "lib/src/types/monitoring/monitor_options.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "probe interval, probe timeout, sample window; defaults 1s/1s/10, bounds validated"
+      },
+      {
+        "symbol": "HealthThresholds",
+        "kind": "class",
+        "file": "lib/src/types/monitoring/health_thresholds.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "latency 100/250ms, loss 1/5%, jitter 30/50ms, spike x2.0 + 50ms floor, min 3 samples"
+      },
+      {
+        "symbol": "MonitorHost",
+        "kind": "sealed class",
+        "file": "lib/src/types/monitoring/monitor_host.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "sealed base; parts preset_host.dart and custom_host.dart"
+      },
+      {
+        "symbol": "PresetHost",
+        "kind": "enum",
+        "file": "lib/src/types/monitoring/preset_host.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "google | cloudflare | openDns, implements MonitorHost"
+      },
+      {
+        "symbol": "CustomHost",
+        "kind": "class",
+        "file": "lib/src/types/monitoring/custom_host.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "host name + required IPv4 + optional IPv6 + port, all validated"
+      },
+      {
+        "symbol": "MonitorInterface",
+        "kind": "sealed class",
+        "file": "lib/src/types/monitoring/monitor_interface.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "sealed base; parts internet_interface.dart and gateway_interface.dart"
+      },
+      {
+        "symbol": "InternetInterface",
+        "kind": "class",
+        "file": "lib/src/types/monitoring/internet_interface.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "protocol + host, all three protocols accepted"
+      },
+      {
+        "symbol": "GatewayInterface",
+        "kind": "class",
+        "file": "lib/src/types/monitoring/gateway_interface.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "protocol only; rejects UDP at construction"
+      },
+      {
+        "symbol": "SessionData",
+        "kind": "class",
+        "file": "lib/src/types/monitoring/session_data.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "session facts; startedAt must be UTC; copyWith for mid-session changes"
+      },
+      {
+        "symbol": "ConnectionMetrics",
+        "kind": "class",
+        "file": "lib/src/types/monitoring/connection_metrics.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "one measurement; nullable fields mean not-yet-available, never zero"
+      },
+      {
+        "symbol": "MonitorEvent / MonitorEventKind",
+        "kind": "class + enum",
+        "file": "lib/src/types/monitoring/monitor_event.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "11 kinds split edge- vs level-triggered; timestamp must be UTC"
+      },
+      {
+        "symbol": "MonitorUpdate / MetricsUpdate / EventUpdate",
+        "kind": "sealed class",
+        "file": "lib/src/types/monitoring/monitor_update.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "combined-stream union, exhaustively switchable"
+      },
+      {
+        "symbol": "MonitorSignal / ProbeSample / NetworkStateChange / ProbeOutcome",
+        "kind": "sealed class + enum",
+        "file": "lib/src/types/monitoring/monitor_signal.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "raw native input; the engine's test seam"
+      },
+      {
+        "symbol": "isIPv4 / isIPv6 / requireIPv4 / requireIPv6 / requirePort",
+        "kind": "functions",
+        "file": "lib/src/types/monitoring/ip_validation.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "address validation without dart:io, so the contract stays platform-free"
+      }
+    ],
+    "failures": [
+      {
+        "symbol": "PermissionFailure, UnsupportedCapabilityFailure, GatewayDiscoveryFailure, InvalidConfigurationFailure, TargetUnreachableFailure, ProbeTimeoutFailure, SessionAlreadyRunningFailure, NoActiveSessionFailure",
+        "kind": "classes",
+        "file": "lib/src/failures/monitoring_failures.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "the eight typed failures; PermissionFailure adds remediation guidance"
+      }
+    ],
+    "contract": [
+      {
+        "symbol": "NetworkAnalyzerPlatform.startMonitoring / stopMonitoring / currentSession / monitorSignals",
+        "kind": "methods",
+        "file": "lib/src/network_analyzer_platform.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "four add-only members, UnimplementedError defaults"
+      },
+      {
+        "symbol": "network_analyzer_platform_interface",
+        "kind": "barrel",
+        "file": "lib/network_analyzer_platform_interface.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "exports every public monitoring type"
+      }
+    ],
+    "facade": [
+      {
+        "symbol": "NetworkAnalyzer",
+        "kind": "class",
+        "file": "lib/network_analyzer.dart",
+        "package": "network_analyzer",
+        "summary": "startMonitoring / stopMonitoring / currentSession / metrics / events / updates / dispose; no longer const"
+      },
+      {
+        "symbol": "MonitoringController",
+        "kind": "class",
+        "file": "lib/src/monitoring/monitoring_controller.dart",
+        "package": "network_analyzer",
+        "summary": "single-flight, stream fan-out over one source, subscriber counting with 1->0 auto-stop"
+      },
+      {
+        "symbol": "MetricsEngine",
+        "kind": "class",
+        "file": "lib/src/monitoring/metrics_engine.dart",
+        "package": "network_analyzer",
+        "summary": "ProbeSample -> ConnectionMetrics; all derived values computed here, once"
+      },
+      {
+        "symbol": "RollingWindow",
+        "kind": "class",
+        "file": "lib/src/monitoring/rolling_window.dart",
+        "package": "network_analyzer",
+        "summary": "fixed-capacity window; bounds memory for long sessions"
+      },
+      {
+        "symbol": "calculateJitter",
+        "kind": "function",
+        "file": "lib/src/monitoring/jitter_calculator.dart",
+        "package": "network_analyzer",
+        "summary": "mean absolute consecutive difference over successes"
+      },
+      {
+        "symbol": "SpikeDetector",
+        "kind": "class",
+        "file": "lib/src/monitoring/spike_detector.dart",
+        "package": "network_analyzer",
+        "summary": "multiplier AND absolute margin, so LAN noise is not a spike"
+      },
+      {
+        "symbol": "HealthEvaluator",
+        "kind": "class",
+        "file": "lib/src/monitoring/health_evaluator.dart",
+        "package": "network_analyzer",
+        "summary": "worst-of-three grading; unknown only for too-few-samples or no interface"
+      },
+      {
+        "symbol": "EventSynthesizer",
+        "kind": "class",
+        "file": "lib/src/monitoring/event_synthesizer.dart",
+        "package": "network_analyzer",
+        "summary": "state transitions to events; 30s per-kind cooldown for level-triggered kinds"
+      },
+      {
+        "symbol": "roundToTenthMilli / roundToTenth",
+        "kind": "functions",
+        "file": "lib/src/monitoring/rounding.dart",
+        "package": "network_analyzer",
+        "summary": "the single rounding point, so both platforms agree"
+      }
+    ],
+    "platform_dart": [
+      {
+        "symbol": "NetworkAnalyzerAndroid",
+        "kind": "class",
+        "file": "lib/network_analyzer_android.dart",
+        "package": "network_analyzer_android",
+        "summary": "implements the four contract members over pigeon"
+      },
+      {
+        "symbol": "NetworkAnalyzerIos",
+        "kind": "class",
+        "file": "lib/network_analyzer_ios.dart",
+        "package": "network_analyzer_ios",
+        "summary": "implements the four contract members over pigeon"
+      },
+      {
+        "symbol": "toConfigMessage / toSessionData / toMonitorSignal + enum converters",
+        "kind": "functions",
+        "file": "lib/src/monitoring/monitor_mapper.dart",
+        "package": "network_analyzer_android",
+        "summary": "message <-> domain; generated types never leave the package"
+      },
+      {
+        "symbol": "toConfigMessage / toSessionData / toMonitorSignal + enum converters",
+        "kind": "functions",
+        "file": "lib/src/monitoring/monitor_mapper.dart",
+        "package": "network_analyzer_ios",
+        "summary": "message <-> domain; generated types never leave the package"
+      },
+      {
+        "symbol": "mapPlatformException",
+        "kind": "function",
+        "file": "lib/src/monitoring/monitor_failures.dart",
+        "package": "network_analyzer_android",
+        "summary": "native error code -> typed Failure; logs via dart:developer"
+      },
+      {
+        "symbol": "mapPlatformException",
+        "kind": "function",
+        "file": "lib/src/monitoring/monitor_failures.dart",
+        "package": "network_analyzer_ios",
+        "summary": "native error code -> typed Failure; logs via dart:developer"
+      }
+    ],
+    "platform_native": [
+      {
+        "symbol": "MonitorSessionController",
+        "kind": "class",
+        "file": "android/src/main/kotlin/com/koaladevelopments/network_analyzer_android/monitoring/MonitorSessionController.kt",
+        "package": "network_analyzer_android",
+        "summary": "serial executor, monotonic timing, single-flight, 3-failure fallback, IPv6-only ICMP guard"
+      },
+      {
+        "symbol": "MonitorStreamHandler",
+        "kind": "class",
+        "file": "android/src/main/kotlin/com/koaladevelopments/network_analyzer_android/monitoring/MonitorStreamHandler.kt",
+        "package": "network_analyzer_android",
+        "summary": "onListen attaches the sink, onCancel stops probing"
+      },
+      {
+        "symbol": "NetworkInspector / AndroidNetworkInspector / NetworkFacts",
+        "kind": "interface + class",
+        "file": "android/src/main/kotlin/com/koaladevelopments/network_analyzer_android/monitoring/NetworkInspector.kt",
+        "package": "network_analyzer_android",
+        "summary": "ConnectivityManager type/address/default route; cellular generation best-effort"
+      },
+      {
+        "symbol": "MonitorErrors",
+        "kind": "object",
+        "file": "android/src/main/kotlin/com/koaladevelopments/network_analyzer_android/monitoring/MonitorErrors.kt",
+        "package": "network_analyzer_android",
+        "summary": "the shared native error codes"
+      },
+      {
+        "symbol": "Prober / ProbeResult / TcpProber / UdpProber / IcmpProber / IcmpPacket",
+        "kind": "interface + classes",
+        "file": "android/src/main/kotlin/com/koaladevelopments/network_analyzer_android/monitoring/probe/",
+        "package": "network_analyzer_android",
+        "summary": "ICMP via android.system.Os unprivileged datagram socket, no NDK"
+      },
+      {
+        "symbol": "NetworkAnalyzerAndroidPlugin",
+        "kind": "class",
+        "file": "android/src/main/kotlin/com/koaladevelopments/network_analyzer_android/NetworkAnalyzerAndroidPlugin.kt",
+        "package": "network_analyzer_android",
+        "summary": "registers both host APIs and the event channel"
+      },
+      {
+        "symbol": "MonitorSessionController",
+        "kind": "class",
+        "file": "ios/network_analyzer_ios/Sources/network_analyzer_ios/Monitoring/MonitorSessionController.swift",
+        "package": "network_analyzer_ios",
+        "summary": "serial DispatchQueue, CLOCK_MONOTONIC_RAW, identical semantics to Android"
+      },
+      {
+        "symbol": "MonitorStreamHandler",
+        "kind": "class",
+        "file": "ios/network_analyzer_ios/Sources/network_analyzer_ios/Monitoring/MonitorStreamHandler.swift",
+        "package": "network_analyzer_ios",
+        "summary": "onListen attaches the sink, onCancel stops probing"
+      },
+      {
+        "symbol": "NetworkInspector / DarwinNetworkInspector / NetworkFacts",
+        "kind": "protocol + class",
+        "file": "ios/network_analyzer_ios/Sources/network_analyzer_ios/Monitoring/NetworkInspector.swift",
+        "package": "network_analyzer_ios",
+        "summary": "NWPathMonitor + CTTelephonyNetworkInfo + getifaddrs"
+      },
+      {
+        "symbol": "RouteTable",
+        "kind": "enum",
+        "file": "ios/network_analyzer_ios/Sources/network_analyzer_ios/Monitoring/RouteTable.swift",
+        "package": "network_analyzer_ios",
+        "summary": "default gateway via sysctl NET_RT_DUMP; the iOS SDK ships no <net/route.h>, so RTF_*/RTA_* and the rt_msghdr layout are declared here and read by byte offset, with every field validated before use"
+      },
+      {
+        "symbol": "MonitorErrors",
+        "kind": "enum",
+        "file": "ios/network_analyzer_ios/Sources/network_analyzer_ios/Monitoring/MonitorErrors.swift",
+        "package": "network_analyzer_ios",
+        "summary": "the shared native error codes"
+      },
+      {
+        "symbol": "Prober / ProbeResult / TcpProber / UdpProber / IcmpProber / IcmpPacket / resolveAddress / monotonicNanos",
+        "kind": "protocol + classes",
+        "file": "ios/network_analyzer_ios/Sources/network_analyzer_ios/Monitoring/Probe/",
+        "package": "network_analyzer_ios",
+        "summary": "TCP/UDP resolve via getaddrinfo so NAT64 synthesis keeps IPv6-only networks working"
+      },
+      {
+        "symbol": "NetworkAnalyzerIosPlugin",
+        "kind": "class",
+        "file": "ios/network_analyzer_ios/Sources/network_analyzer_ios/NetworkAnalyzerIosPlugin.swift",
+        "package": "network_analyzer_ios",
+        "summary": "registers both host APIs and the event channel"
+      }
+    ],
+    "transport": [
+      {
+        "symbol": "pigeons/monitoring.dart",
+        "kind": "pigeon input",
+        "file": "pigeons/monitoring.dart",
+        "package": "network_analyzer_android",
+        "summary": "MonitoringHostApi + MonitoringEventApi; includeErrorClass false"
+      },
+      {
+        "symbol": "pigeons/monitoring.dart",
+        "kind": "pigeon input",
+        "file": "pigeons/monitoring.dart",
+        "package": "network_analyzer_ios",
+        "summary": "MonitoringHostApi + MonitoringEventApi; includeErrorClass false"
+      },
+      {
+        "symbol": "monitoring.g.dart",
+        "kind": "generated",
+        "file": "lib/src/monitoring.g.dart",
+        "package": "network_analyzer_android",
+        "summary": "",
+        "generated": true
+      },
+      {
+        "symbol": "Monitoring.g.kt",
+        "kind": "generated",
+        "file": "android/src/main/kotlin/com/koaladevelopments/network_analyzer_android/Monitoring.g.kt",
+        "package": "network_analyzer_android",
+        "summary": "",
+        "generated": true
+      },
+      {
+        "symbol": "monitoring.g.dart",
+        "kind": "generated",
+        "file": "lib/src/monitoring.g.dart",
+        "package": "network_analyzer_ios",
+        "summary": "",
+        "generated": true
+      },
+      {
+        "symbol": "Monitoring.g.swift",
+        "kind": "generated",
+        "file": "ios/network_analyzer_ios/Sources/network_analyzer_ios/Monitoring.g.swift",
+        "package": "network_analyzer_ios",
+        "summary": "",
+        "generated": true
+      }
+    ],
+    "tests": [
+      {
+        "symbol": "monitoring type + failure tests",
+        "kind": "tests",
+        "file": "test/src/types/monitoring/, test/src/failures/monitoring_failures_test.dart",
+        "package": "network_analyzer_platform_interface",
+        "summary": "82 tests"
+      },
+      {
+        "symbol": "engine, controller and facade tests",
+        "kind": "tests",
+        "file": "test/src/monitoring/, test/network_analyzer_test.dart, test/fakes/fake_network_analyzer_platform.dart",
+        "package": "network_analyzer",
+        "summary": "89 tests, all fixture-driven, no network"
+      },
+      {
+        "symbol": "mapper + failure mapping tests",
+        "kind": "tests",
+        "file": "test/src/monitoring/monitor_mapper_test.dart, test/network_analyzer_android_test.dart",
+        "package": "network_analyzer_android",
+        "summary": "20 tests"
+      },
+      {
+        "symbol": "mapper + failure mapping tests",
+        "kind": "tests",
+        "file": "test/src/monitoring/monitor_mapper_test.dart, test/network_analyzer_ios_test.dart",
+        "package": "network_analyzer_ios",
+        "summary": "20 tests"
+      },
+      {
+        "symbol": "Kotlin unit tests",
+        "kind": "tests",
+        "file": "android/src/test/kotlin/com/koaladevelopments/network_analyzer_android/monitoring/",
+        "package": "network_analyzer_android",
+        "summary": "26 tests via ./gradlew :network_analyzer_android:testDebugUnitTest"
+      },
+      {
+        "symbol": "Swift unit tests",
+        "kind": "tests",
+        "file": "ios/network_analyzer_ios/Tests/network_analyzer_iosTests/",
+        "package": "network_analyzer_ios",
+        "summary": "not yet executed: swift test needs a Flutter iOS build for the FlutterFramework dependency"
+      },
+      {
+        "symbol": "integration tests",
+        "kind": "tests",
+        "file": "integration_test/monitoring_test.dart",
+        "package": "example",
+        "summary": "not yet executed: needs a device"
+      },
+      {
+        "symbol": "example monitoring UI",
+        "kind": "widgets",
+        "file": "lib/src/{monitoring_screen,target_picker,metrics_tab,events_tab,timeline_tab}.dart",
+        "package": "example",
+        "summary": "manual verification surface; exercises both monitor kinds, all protocols, every preset, a custom target and all three streams"
+      }
+    ]
   },
   "dependencies": {
-    "domains": ["core_result"],
+    "domains": [
+      "core_result",
+      "bridge_bootstrap"
+    ],
     "pub": {},
-    "native": {}
+    "native": {
+      "android": "ConnectivityManager, LinkProperties/RouteInfo, NetworkCapabilities, TelephonyManager (optional), android.system.Os (unprivileged ICMP datagram sockets); permissions INTERNET + ACCESS_NETWORK_STATE only",
+      "ios": "Network (NWPathMonitor), CoreTelephony (CTTelephonyNetworkInfo), getifaddrs, sysctl NET_RT_DUMP, BSD sockets; no entitlement, no Info.plist key"
+    }
   },
   "retrieval_hints": [
-    "First feature — populate during /speckit-specify → /speckit-plan.",
-    "Continuous data goes out as broadcast Streams (constitution Principle V); pigeon inputs land in pigeons/monitoring.dart per platform package."
+    "Spec: specs/001-real-time-monitoring/spec.md (FR-001..FR-042). Plan: plan.md. Decisions: research.md (R-001..R-014). Tasks: tasks.md (T001..T124).",
+    "Core design rule (R-001): native emits ONLY raw ProbeSample + NetworkStateChange. Every derived value lives in packages/network_analyzer/lib/src/monitoring/. Never add metric maths to Kotlin or Swift.",
+    "Defaults: 1s probe interval, 1s probe timeout, 10-sample rolling window. Health: latency 100/250ms, loss 1/5%, jitter 30/50ms, worst-of-three. Spike: >2.0x window mean AND >=50ms above it.",
+    "Window-scoped and recovering: packet loss, jitter, health. Cumulative for the session: spike count, uptime, average/lowest/highest latency.",
+    "One session at a time. Auto-stop fires only on a 1->0 subscriber transition, so a never-subscribed session keeps running.",
+    "stopMonitoring() ends emission; dispose() completes the streams. Documented deviation from the literal wording of FR-016 - see the dartdoc on MonitoringController.dispose.",
+    "Pigeon constraints: event-channel methods take no parameters and must all live in one @EventChannelApi; a wire field must not be named 'protocol' (reserved in Swift, emitted unescaped) - hence probeProtocol.",
+    "ICMP is IPv4-only; an IPv6-only network returns UnsupportedCapabilityFailure. Upgrade path marked with 'ponytail:' comments at both IcmpProber sites.",
+    "iOS gotcha: <net/route.h> is absent from the iOS SDK (rt_msghdr, RTF_*, RTA_* unavailable to Swift AND C), while CTL_NET/PF_ROUTE/NET_RT_DUMP are present in <sys/socket.h>. Verify Swift with `swiftc -typecheck -sdk $(xcrun --sdk iphoneos --show-sdk-path)` \u2014 `-parse` alone resolves no symbols."
   ]
 }

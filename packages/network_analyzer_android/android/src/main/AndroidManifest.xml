@@ -1,3 +1,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.koaladevelopments.network_analyzer_android">
+
+  <!-- Sending probes to a monitoring target. -->
+  <uses-permission android:name="android.permission.INTERNET" />
+
+  <!-- Reading the active network's transport type, link addresses and default
+       route via ConnectivityManager. Normal permission, granted at install. -->
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+  <!-- READ_PHONE_STATE is deliberately NOT declared. It is the only way to
+       refine a cellular connection to its generation (5G/4G/3G/2G) from
+       API 30 onward, but it is a dangerous runtime permission and declaring
+       it here would force it onto every host application that adds this
+       plugin. Least privilege wins: without it the session honestly reports
+       NetworkInterfaceType.cellular. A host that has independently been
+       granted READ_PHONE_STATE gets the refined value for free.
+       See specs/001-real-time-monitoring/research.md, decision R-005. -->
 </manifest>

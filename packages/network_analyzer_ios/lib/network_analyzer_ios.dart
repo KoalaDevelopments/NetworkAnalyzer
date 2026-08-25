@@ -2,21 +2,29 @@ import 'dart:developer' as developer;
 
 import 'package:flutter/services.dart';
 import 'package:network_analyzer_ios/src/messages.g.dart';
+import 'package:network_analyzer_ios/src/monitoring.g.dart';
+import 'package:network_analyzer_ios/src/monitoring/monitor_failures.dart';
+import 'package:network_analyzer_ios/src/monitoring/monitor_mapper.dart';
 import 'package:network_analyzer_platform_interface/network_analyzer_platform_interface.dart';
 
 /// The iOS implementation of [NetworkAnalyzerPlatform].
 ///
 /// Communicates with the native side exclusively through the
-/// pigeon-generated [NetworkAnalyzerHostApi] (constitution, Principle II).
+/// pigeon-generated [NetworkAnalyzerHostApi] and [MonitoringHostApi]
+/// (constitution, Principle II).
 final class NetworkAnalyzerIos extends NetworkAnalyzerPlatform {
   /// Creates the iOS implementation.
   ///
-  /// [api] is injectable for tests; production code uses the default
-  /// pigeon-generated client.
-  NetworkAnalyzerIos({NetworkAnalyzerHostApi? api})
-    : _api = api ?? NetworkAnalyzerHostApi();
+  /// [api] and [monitoringApi] are injectable for tests; production code
+  /// uses the default pigeon-generated clients.
+  NetworkAnalyzerIos({
+    NetworkAnalyzerHostApi? api,
+    MonitoringHostApi? monitoringApi,
+  }) : _api = api ?? NetworkAnalyzerHostApi(),
+       _monitoringApi = monitoringApi ?? MonitoringHostApi();
 
   final NetworkAnalyzerHostApi _api;
+  final MonitoringHostApi _monitoringApi;
 
   /// Registers this class as the default instance of
   /// [NetworkAnalyzerPlatform].
@@ -53,4 +61,55 @@ final class NetworkAnalyzerIos extends NetworkAnalyzerPlatform {
       );
     }
   }
+
+  @override
+  Future<Result<SessionData, Failure>> startMonitoring(
+    MonitorInterface target,
+  ) async {
+    try {
+      final SessionDataMessage message = await _monitoringApi.startSession(
+        toConfigMessage(target),
+      );
+      return Result<SessionData, Failure>.success(toSessionData(message));
+    } on PlatformException catch (error) {
+      return Result<SessionData, Failure>.failure(
+        mapPlatformException(error, 'startMonitoring'),
+      );
+    }
+  }
+
+  @override
+  Future<Result<void, Failure>> stopMonitoring() async {
+    try {
+      await _monitoringApi.stopSession();
+      return const Result<void, Failure>.success(null);
+    } on PlatformException catch (error) {
+      return Result<void, Failure>.failure(
+        mapPlatformException(error, 'stopMonitoring'),
+      );
+    }
+  }
+
+  @override
+  Future<Result<SessionData, Failure>> currentSession() async {
+    try {
+      final SessionDataMessage? message = await _monitoringApi.currentSession();
+      if (message == null) {
+        return const Result<SessionData, Failure>.failure(
+          NoActiveSessionFailure(
+            message: 'No monitoring session is running.',
+          ),
+        );
+      }
+      return Result<SessionData, Failure>.success(toSessionData(message));
+    } on PlatformException catch (error) {
+      return Result<SessionData, Failure>.failure(
+        mapPlatformException(error, 'currentSession'),
+      );
+    }
+  }
+
+  @override
+  Stream<MonitorSignal> monitorSignals() =>
+      streamMonitorSignals().map(toMonitorSignal);
 }
