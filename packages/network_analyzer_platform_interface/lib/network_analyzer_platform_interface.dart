@@ -10,10 +10,8 @@ library;
 import 'network_analyzer_platform_interface.dart';
 
 export 'src/core/result/result.dart';
-export 'src/failures/bridge_failure.dart';
 export 'src/failures/monitoring_failures.dart';
 export 'src/network_analyzer_platform.dart';
-export 'src/types/bridge_info.dart';
 export 'src/types/monitoring/connection_health.dart';
 export 'src/types/monitoring/connection_metrics.dart';
 export 'src/types/monitoring/health_thresholds.dart';

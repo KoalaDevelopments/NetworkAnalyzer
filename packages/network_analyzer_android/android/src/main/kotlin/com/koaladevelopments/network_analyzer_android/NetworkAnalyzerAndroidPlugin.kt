@@ -12,21 +12,17 @@ import io.flutter.embedding.engine.plugins.FlutterPlugin
 /**
  * Android entry point of the network_analyzer plugin.
  *
- * Exposes the pigeon-generated [NetworkAnalyzerHostApi] and
- * [MonitoringHostApi] over the engine's binary messenger, plus the
- * monitoring signal event channel. The wire layer lives in Messages.g.kt and
- * Monitoring.g.kt, generated from pigeons/ — never hand-write channel code
- * (constitution, Principle II).
+ * Exposes the pigeon-generated [MonitoringHostApi] over the engine's binary
+ * messenger, plus the monitoring signal event channel. The wire layer lives
+ * in Monitoring.g.kt, generated from pigeons/ — never hand-write channel
+ * code (constitution, Principle II).
  */
 class NetworkAnalyzerAndroidPlugin :
     FlutterPlugin,
-    NetworkAnalyzerHostApi,
     MonitoringHostApi {
     private var controller: MonitorSessionController? = null
 
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-        NetworkAnalyzerHostApi.setUp(binding.binaryMessenger, this)
-
         val sessionController = MonitorSessionController(
             inspector = AndroidNetworkInspector(binding.applicationContext),
             proberFactory = ::proberFor,
@@ -40,17 +36,10 @@ class NetworkAnalyzerAndroidPlugin :
     }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-        NetworkAnalyzerHostApi.setUp(binding.binaryMessenger, null)
         MonitoringHostApi.setUp(binding.binaryMessenger, null)
         controller?.dispose()
         controller = null
     }
-
-    override fun getBridgeInfo(): BridgeInfoMessage =
-        BridgeInfoMessage(
-            operatingSystem = "android",
-            osVersion = android.os.Build.VERSION.RELEASE ?: "unknown",
-        )
 
     override fun startSession(config: MonitorConfigMessage): SessionDataMessage =
         requireController().startSession(config)

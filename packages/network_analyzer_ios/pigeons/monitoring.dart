@@ -5,9 +5,10 @@
 // generated file by hand and never hand-write channel code (constitution,
 // Principle II).
 //
-// includeErrorClass is false here because pigeons/messages.dart already
-// emits the error class into the same Kotlin package and Swift module; a
-// second copy would not compile.
+// This is the only pigeon input in this package (the bootstrap-probe input
+// that used to pair with it, pigeons/messages.dart, was removed once the
+// real feature landed), so it owns the error class — includeErrorClass is
+// left at its default (true).
 //
 // Thresholds and the sample window are deliberately absent from
 // MonitorConfigMessage. They are consumed only by the Dart metrics engine,
@@ -24,7 +25,6 @@ import 'package:pigeon/pigeon.dart';
     dartOut: 'lib/src/monitoring.g.dart',
     swiftOut:
         'ios/network_analyzer_ios/Sources/network_analyzer_ios/Monitoring.g.swift',
-    swiftOptions: SwiftOptions(includeErrorClass: false),
     dartPackageName: 'network_analyzer_ios',
   ),
 )

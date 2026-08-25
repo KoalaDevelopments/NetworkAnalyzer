@@ -29,52 +29,6 @@
       "notes": "Canonical implementation per guidelines.md; must never be replaced by dartz/fpdart. Pure Dart, fully unit-tested."
     },
     {
-      "id": "bridge_bootstrap",
-      "map": "maps/bridge_bootstrap/map.json",
-      "name": "Bridge bootstrap probe (getBridgeInfo)",
-      "status": "scaffolded",
-      "spec": null,
-      "public_api": [
-        "NetworkAnalyzer.getBridgeInfo",
-        "NetworkAnalyzerPlatform.getBridgeInfo",
-        "BridgeInfo",
-        "BridgeFailure"
-      ],
-      "packages": {
-        "network_analyzer": [
-          "lib/network_analyzer.dart",
-          "test/network_analyzer_test.dart"
-        ],
-        "network_analyzer_platform_interface": [
-          "lib/src/network_analyzer_platform.dart",
-          "lib/src/types/bridge_info.dart",
-          "lib/src/failures/bridge_failure.dart",
-          "test/src/network_analyzer_platform_test.dart",
-          "test/src/types/bridge_info_test.dart"
-        ],
-        "network_analyzer_android": [
-          "lib/network_analyzer_android.dart",
-          "test/network_analyzer_android_test.dart",
-          "android/src/main/kotlin/com/koaladevelopments/network_analyzer_android/NetworkAnalyzerAndroidPlugin.kt",
-          "android/src/test/kotlin/com/koaladevelopments/network_analyzer_android/NetworkAnalyzerAndroidPluginTest.kt"
-        ],
-        "network_analyzer_ios": [
-          "lib/network_analyzer_ios.dart",
-          "test/network_analyzer_ios_test.dart",
-          "ios/network_analyzer_ios/Sources/network_analyzer_ios/NetworkAnalyzerIosPlugin.swift"
-        ],
-        "example": [
-          "lib/main.dart",
-          "integration_test/bridge_info_test.dart"
-        ]
-      },
-      "pigeons": [
-        "packages/network_analyzer_android/pigeons/messages.dart",
-        "packages/network_analyzer_ios/pigeons/messages.dart"
-      ],
-      "notes": "Codegen complete (pigeon ^27.3.2); generated outputs exist and are committed per constitution. Full file inventory incl. generated files lives in the local map."
-    },
-    {
       "id": "real_time_monitoring",
       "map": "maps/real_time_monitoring/map.json",
       "name": "Real-time monitoring",

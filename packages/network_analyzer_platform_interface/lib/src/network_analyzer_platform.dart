@@ -1,9 +1,4 @@
-import 'package:network_analyzer_platform_interface/network_analyzer_platform_interface.dart'
-    show BridgeFailure;
 import 'package:network_analyzer_platform_interface/src/core/result/result.dart';
-import 'package:network_analyzer_platform_interface/src/failures/bridge_failure.dart'
-    show BridgeFailure;
-import 'package:network_analyzer_platform_interface/src/types/bridge_info.dart';
 import 'package:network_analyzer_platform_interface/src/types/monitoring/monitor_interface.dart';
 import 'package:network_analyzer_platform_interface/src/types/monitoring/monitor_signal.dart';
 import 'package:network_analyzer_platform_interface/src/types/monitoring/session_data.dart';
@@ -39,14 +34,6 @@ abstract class NetworkAnalyzerPlatform extends PlatformInterface {
     PlatformInterface.verify(instance, _token);
     _instance = instance;
   }
-
-  /// Reports the identity of the native side of the plugin.
-  ///
-  /// This is the bootstrap probe verifying the typed channel round-trip on
-  /// each platform. Implementations return a [BridgeFailure] when the
-  /// native call cannot complete.
-  Future<Result<BridgeInfo, Failure>> getBridgeInfo() =>
-      throw UnimplementedError('getBridgeInfo() has not been implemented.');
 
   /// Starts a monitoring session against [target].
   ///

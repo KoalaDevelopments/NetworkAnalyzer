@@ -52,10 +52,10 @@ Bootstrap complete.
 
 Manual follow-ups (need a device/emulator):
   cd packages/network_analyzer/example
-  flutter run                                   # exercise the bootstrap API
+  flutter run                                   # exercise real-time monitoring
   flutter test integration_test                 # end-to-end round-trip
 
-After the first successful codegen, commit the generated files
-(lib/src/messages.g.dart, Messages.g.kt, Messages.g.swift) and the pigeon
-constraint pub wrote into the platform packages' pubspecs.
+After the first successful codegen, commit each package's generated files
+(lib/src/*.g.dart, *.g.kt, *.g.swift) and the pigeon constraint pub wrote
+into the platform packages' pubspecs.
 EOF

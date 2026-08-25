@@ -468,8 +468,7 @@
   },
   "dependencies": {
     "domains": [
-      "core_result",
-      "bridge_bootstrap"
+      "core_result"
     ],
     "pub": {},
     "native": {
@@ -488,6 +487,7 @@
     "ICMP is IPv4-only; an IPv6-only network returns UnsupportedCapabilityFailure. Upgrade path marked with 'ponytail:' comments at both IcmpProber sites.",
     "iOS gotcha: <net/route.h> is absent from the iOS SDK (rt_msghdr, RTF_*, RTA_* unavailable to Swift AND C), while CTL_NET/PF_ROUTE/NET_RT_DUMP are present in <sys/socket.h>. Verify Swift with `swiftc -typecheck -sdk $(xcrun --sdk iphoneos --show-sdk-path)` \u2014 `-parse` alone resolves no symbols.",
     "Probe semantics learned on-device: TCP refused (RST) = success with timing, on both platforms; Darwin ICMP dgram sockets deliver the IPv4 header (strip before parsing, loop for matching sequence); SO_SNDTIMEO does not bound blocking connect() on Darwin \u2014 iOS TCP uses non-blocking connect + poll + SO_ERROR.",
-    "Environment truths (device-validated, documented in quickstart + dartdoc): carriers deprioritize ICMP (high/variable latency on cellular is real); cellular 'gateway' drops probes on most carriers (use internet monitor there); Android emulator slirp NAT forwards no external ICMP and distorts all latency."
+    "Environment truths (device-validated, documented in quickstart + dartdoc): carriers deprioritize ICMP (high/variable latency on cellular is real); cellular 'gateway' drops probes on most carriers (use internet monitor there); Android emulator slirp NAT forwards no external ICMP and distorts all latency.",
+    "bridge_bootstrap (getBridgeInfo scaffolding probe) was removed 2026-08-24 once real_time_monitoring shipped \u2014 it never depended on it in practice."
   ]
 }

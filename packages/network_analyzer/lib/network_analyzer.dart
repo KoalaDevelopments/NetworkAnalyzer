@@ -12,8 +12,6 @@ import 'package:network_analyzer_platform_interface/network_analyzer_platform_in
 
 export 'package:network_analyzer_platform_interface/network_analyzer_platform_interface.dart'
     show
-        BridgeFailure,
-        BridgeInfo,
         ConnectionHealth,
         ConnectionMetrics,
         CustomHost,
@@ -80,15 +78,6 @@ class NetworkAnalyzer {
     : _controller = controller ?? MonitoringController();
 
   final MonitoringController _controller;
-
-  /// Reports the identity of the native side of the plugin.
-  ///
-  /// Bootstrap probe verifying the typed Dart↔native round-trip. On
-  /// success the [BridgeInfo] describes the platform that answered; on
-  /// failure a [BridgeFailure] describes why the native call could not
-  /// complete.
-  Future<Result<BridgeInfo, Failure>> getBridgeInfo() =>
-      NetworkAnalyzerPlatform.instance.getBridgeInfo();
 
   /// Starts monitoring [target] and describes the session that began.
   ///

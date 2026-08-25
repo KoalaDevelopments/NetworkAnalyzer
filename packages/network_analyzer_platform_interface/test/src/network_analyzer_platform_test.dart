@@ -12,10 +12,6 @@ final class _ImplementsPlatform extends PlatformInterface
   static final Object _fakeToken = Object();
 
   @override
-  Future<Result<BridgeInfo, Failure>> getBridgeInfo() =>
-      throw UnimplementedError();
-
-  @override
   Future<Result<SessionData, Failure>> startMonitoring(
     MonitorInterface target,
   ) => throw UnimplementedError();
@@ -33,12 +29,6 @@ final class _ImplementsPlatform extends PlatformInterface
 
 void main() {
   group('NetworkAnalyzerPlatform', () {
-    test('default instance throws UnimplementedError for getBridgeInfo', () {
-      check(
-        () => NetworkAnalyzerPlatform.instance.getBridgeInfo(),
-      ).throws<UnimplementedError>();
-    });
-
     test('default instance throws UnimplementedError for startMonitoring', () {
       check(
         () => NetworkAnalyzerPlatform.instance.startMonitoring(

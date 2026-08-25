@@ -1,7 +1,4 @@
-import 'dart:developer' as developer;
-
 import 'package:flutter/services.dart';
-import 'package:network_analyzer_ios/src/messages.g.dart';
 import 'package:network_analyzer_ios/src/monitoring.g.dart';
 import 'package:network_analyzer_ios/src/monitoring/monitor_failures.dart';
 import 'package:network_analyzer_ios/src/monitoring/monitor_mapper.dart';
@@ -10,20 +7,15 @@ import 'package:network_analyzer_platform_interface/network_analyzer_platform_in
 /// The iOS implementation of [NetworkAnalyzerPlatform].
 ///
 /// Communicates with the native side exclusively through the
-/// pigeon-generated [NetworkAnalyzerHostApi] and [MonitoringHostApi]
-/// (constitution, Principle II).
+/// pigeon-generated [MonitoringHostApi] (constitution, Principle II).
 final class NetworkAnalyzerIos extends NetworkAnalyzerPlatform {
   /// Creates the iOS implementation.
   ///
-  /// [api] and [monitoringApi] are injectable for tests; production code
-  /// uses the default pigeon-generated clients.
-  NetworkAnalyzerIos({
-    NetworkAnalyzerHostApi? api,
-    MonitoringHostApi? monitoringApi,
-  }) : _api = api ?? NetworkAnalyzerHostApi(),
-       _monitoringApi = monitoringApi ?? MonitoringHostApi();
+  /// [monitoringApi] is injectable for tests; production code uses the
+  /// default pigeon-generated client.
+  NetworkAnalyzerIos({MonitoringHostApi? monitoringApi})
+    : _monitoringApi = monitoringApi ?? MonitoringHostApi();
 
-  final NetworkAnalyzerHostApi _api;
   final MonitoringHostApi _monitoringApi;
 
   /// Registers this class as the default instance of
@@ -33,33 +25,6 @@ final class NetworkAnalyzerIos extends NetworkAnalyzerPlatform {
   /// the pubspec; never called manually.
   static void registerWith() {
     NetworkAnalyzerPlatform.instance = NetworkAnalyzerIos();
-  }
-
-  @override
-  Future<Result<BridgeInfo, Failure>> getBridgeInfo() async {
-    try {
-      final BridgeInfoMessage message = await _api.getBridgeInfo();
-      return Result<BridgeInfo, Failure>.success(
-        BridgeInfo(
-          operatingSystem: message.operatingSystem,
-          osVersion: message.osVersion,
-        ),
-      );
-    } on PlatformException catch (error, stackTrace) {
-      developer.log(
-        'getBridgeInfo failed',
-        name: 'network_analyzer_ios',
-        level: 1000,
-        error: error,
-        stackTrace: stackTrace,
-      );
-      return Result<BridgeInfo, Failure>.failure(
-        BridgeFailure(
-          message: 'Failed to read native bridge info.',
-          details: '$error',
-        ),
-      );
-    }
   }
 
   @override

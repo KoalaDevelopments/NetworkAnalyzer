@@ -1,22 +1,16 @@
 import Flutter
-import UIKit
 
 /// iOS entry point of the network_analyzer plugin.
 ///
-/// Exposes the pigeon-generated `NetworkAnalyzerHostApi` and
-/// `MonitoringHostApi` over the engine's binary messenger, plus the
-/// monitoring signal event channel. The wire layer lives in Messages.g.swift
-/// and Monitoring.g.swift, generated from pigeons/ — never hand-write channel
+/// Exposes the pigeon-generated `MonitoringHostApi` over the engine's binary
+/// messenger, plus the monitoring signal event channel. The wire layer lives
+/// in Monitoring.g.swift, generated from pigeons/ — never hand-write channel
 /// code (constitution, Principle II).
-public class NetworkAnalyzerIosPlugin: NSObject, FlutterPlugin, NetworkAnalyzerHostApi,
-  MonitoringHostApi
-{
+public class NetworkAnalyzerIosPlugin: NSObject, FlutterPlugin, MonitoringHostApi {
   private var controller: MonitorSessionController?
 
   public static func register(with registrar: FlutterPluginRegistrar) {
     let instance = NetworkAnalyzerIosPlugin()
-    NetworkAnalyzerHostApiSetup.setUp(
-      binaryMessenger: registrar.messenger(), api: instance)
 
     let sessionController = MonitorSessionController(
       inspector: DarwinNetworkInspector(),
@@ -27,12 +21,6 @@ public class NetworkAnalyzerIosPlugin: NSObject, FlutterPlugin, NetworkAnalyzerH
     StreamMonitorSignalsStreamHandler.register(
       with: registrar.messenger(),
       streamHandler: MonitorStreamHandler(controller: sessionController))
-  }
-
-  func getBridgeInfo() throws -> BridgeInfoMessage {
-    return BridgeInfoMessage(
-      operatingSystem: "ios",
-      osVersion: UIDevice.current.systemVersion)
   }
 
   func startSession(config: MonitorConfigMessage) throws -> SessionDataMessage {
