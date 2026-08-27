@@ -1,8 +1,15 @@
 name: network_analyzer_android
 description: >-
-  The Android implementation of network_analyzer.
+  The Android implementation of the network_analyzer plugin: network
+  monitoring and analysis for mobile devices.
 version: 0.1.0
-publish_to: none
+repository: https://github.com/KoalaDevelopments/NetworkAnalyzer/tree/main/packages/network_analyzer_android
+issue_tracker: https://github.com/KoalaDevelopments/NetworkAnalyzer/issues
+topics:
+  - network
+  - monitoring
+  - connectivity
+  - diagnostics
 
 environment:
   sdk: ^3.11.0
@@ -13,14 +20,13 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
-  network_analyzer_platform_interface:
-    path: ../network_analyzer_platform_interface
+  network_analyzer_platform_interface: ^0.1.0
 
 # NOTE: `pigeon` is added by tool/bootstrap.sh (`flutter pub add dev:pigeon`)
 # so the constraint is written by pub against the live registry, then
 # committed. Run the bootstrap before analyzing this package.
 dev_dependencies:
-  checks: ^0.3.0
+  checks: ^0.3.1
   flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter

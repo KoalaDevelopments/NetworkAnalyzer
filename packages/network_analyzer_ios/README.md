@@ -1,6 +1,6 @@
 # network_analyzer_ios
 
-The iOS implementation of [`network_analyzer`](../network_analyzer),
+The iOS implementation of [`network_analyzer`](https://pub.dev/packages/network_analyzer),
 written in Swift (Swift Package Manager layout, with a CocoaPods podspec
 for compatibility).
 

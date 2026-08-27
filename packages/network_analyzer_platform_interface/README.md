@@ -1,7 +1,7 @@
 # network_analyzer_platform_interface
 
 A common platform interface for the
-[`network_analyzer`](../network_analyzer) plugin.
+[`network_analyzer`](https://pub.dev/packages/network_analyzer) plugin.
 
 This package defines the contract (`NetworkAnalyzerPlatform`) that platform
 implementations must extend, the shared domain types, and the

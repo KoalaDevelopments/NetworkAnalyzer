@@ -2,7 +2,13 @@ name: network_analyzer_platform_interface
 description: >-
   A common platform interface for the network_analyzer plugin.
 version: 0.1.0
-publish_to: none
+repository: https://github.com/KoalaDevelopments/NetworkAnalyzer/tree/main/packages/network_analyzer_platform_interface
+issue_tracker: https://github.com/KoalaDevelopments/NetworkAnalyzer/issues
+topics:
+  - network
+  - monitoring
+  - connectivity
+  - diagnostics
 
 environment:
   sdk: ^3.11.0
@@ -13,11 +19,11 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
-  meta: ^1.15.0
-  plugin_platform_interface: ^2.0.2
+  meta: ^1.19.0
+  plugin_platform_interface: ^2.1.8
 
 dev_dependencies:
-  checks: ^0.3.0
+  checks: ^0.3.1
   flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter

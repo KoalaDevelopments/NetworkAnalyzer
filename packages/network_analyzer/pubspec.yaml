@@ -4,7 +4,13 @@ description: >-
   throughput scanner, scanner history, and diagnostic tools (MTR, Ping,
   TCPing).
 version: 0.1.0
-publish_to: none
+repository: https://github.com/KoalaDevelopments/NetworkAnalyzer/tree/main/packages/network_analyzer
+issue_tracker: https://github.com/KoalaDevelopments/NetworkAnalyzer/issues
+topics:
+  - network
+  - monitoring
+  - connectivity
+  - diagnostics
 
 environment:
   sdk: ^3.11.0
@@ -15,19 +21,16 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
-  network_analyzer_android:
-    path: ../network_analyzer_android
-  network_analyzer_ios:
-    path: ../network_analyzer_ios
-  network_analyzer_platform_interface:
-    path: ../network_analyzer_platform_interface
+  network_analyzer_android: ^0.1.0
+  network_analyzer_ios: ^0.1.0
+  network_analyzer_platform_interface: ^0.1.0
 
 dev_dependencies:
-  checks: ^0.3.0
+  checks: ^0.3.1
   flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
-  plugin_platform_interface: ^2.0.2
+  plugin_platform_interface: ^2.1.8
 
 flutter:
   plugin:

@@ -4,14 +4,14 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'network_analyzer_ios'
-  s.version          = '0.0.1'
+  s.version          = '0.1.0'
   s.summary          = 'The iOS implementation of network_analyzer.'
   s.description      = <<-DESC
 The iOS implementation of network_analyzer.
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'https://github.com/KoalaDevelopments/NetworkAnalyzer'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Koala Developments LTDA' => 'felipe.silva@koaladevelopemtns.com' }
+  s.author           = { 'Koala Developments LTDA' => 'felipe.silva@koaladevelopments.com' }
   s.source           = { :path => '.' }
   
   s.source_files = 'network_analyzer_ios/Sources/network_analyzer_ios/**/*'

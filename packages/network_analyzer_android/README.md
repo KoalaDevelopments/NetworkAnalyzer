@@ -1,6 +1,6 @@
 # network_analyzer_android
 
-The Android implementation of [`network_analyzer`](../network_analyzer),
+The Android implementation of [`network_analyzer`](https://pub.dev/packages/network_analyzer),
 written in Kotlin.
 
 This package is endorsed: host applications depend on `network_analyzer`
