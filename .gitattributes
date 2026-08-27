@@ -1,0 +1,4 @@
+# Windows batch scripts keep CRLF in the working tree (Gradle rewrites
+# gradlew.bat with CRLF on every run; without this the file shows as
+# permanently modified). Stored normalized, checked out as CRLF.
+*.bat text eol=crlf
