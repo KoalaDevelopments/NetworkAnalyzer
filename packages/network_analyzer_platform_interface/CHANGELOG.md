@@ -1,7 +1,14 @@
-# 0.1.0
+## 0.1.0
 
-* Initial scaffold: `NetworkAnalyzerPlatform` with token verification and
-  placeholder default instance.
-* `Result`/`Failure`/`Success` functional core per guidelines.md.
-* Bootstrap probe contract `getBridgeInfo()` returning
-  `Result<BridgeInfo, Failure>`.
+* Initial release: the real-time monitoring contract.
+* `NetworkAnalyzerPlatform`: `startMonitoring`, `stopMonitoring`,
+  `currentSession` and the raw `monitorSignals()` stream that platform
+  implementations must provide.
+* Shared monitoring domain: `SessionData`, `MonitorSignal`,
+  `ProbeSample`, `ConnectionMetrics`, `ConnectionHealth`,
+  `MonitorInterface` (internet/gateway), `MonitorHost` (preset/custom),
+  `MonitorProtocol` (ICMP/TCP/UDP), `MonitorOptions`,
+  `HealthThresholds`, `MonitorEvent`/`MonitorUpdate`, and the monitoring
+  `Failure` hierarchy.
+* `Result`/`Failure`/`Success` functional core — fallible operations
+  return `Result<T, Failure>` and never throw.

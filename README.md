@@ -1,7 +1,7 @@
 # NetworkAnalyzer
 
 A federated Flutter plugin to monitor and analyze network connectivity on
-mobile devices. Planned API surface: real-time monitoring, scanner
+mobile devices. Current surface: real-time monitoring. Planned: scanner
 (download/upload throughput in Mbps), scanner history, and diagnostic tools
 (MTR, Ping, TCPing).
 
@@ -42,6 +42,6 @@ Dart↔native messaging uses pigeon exclusively (constitution, Principle II).
 Each platform package owns its pigeon definition in `pigeons/messages.dart`
 and its generated output; the wire format is a private implementation
 detail of the platform package, not part of the platform interface
-contract. The current surface is a deliberately minimal bootstrap probe
-(`getBridgeInfo`) proving the round-trip; the real feature APIs are added
-per feature through the Spec Kit flow, starting with real-time monitoring.
+contract. Feature APIs are added per feature through the Spec Kit flow; the first,
+real-time monitoring, is implemented on both platforms
+(`specs/001-real-time-monitoring`).
